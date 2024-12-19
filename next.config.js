@@ -17,7 +17,7 @@ const nextConfig = {
       test: /\.svg$/,
       use: ["@svgr/webpack"],
     });
-    config.resolve.alias['@'] = path.resolve(__dirname);
+    config.resolve.alias['@/app'] = path.resolve(__dirname, 'app');
     return config;
   },
 };
