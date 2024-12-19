@@ -39,7 +39,3 @@ next-env.d.ts
 # terraform
 .terraform/
 .terraform.lock.hcl
-
-# lockfile
-yarn.lock
-package-lock.json
