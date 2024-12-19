@@ -15,6 +15,7 @@ const nextConfig = {
   webpack(config) {
     config.module.rules.push({
       test: /\.svg$/,
+      issuer: /\.[jt]sx?$/,
       use: ["@svgr/webpack"],
     });
     config.resolve.alias['@/app'] = path.resolve(__dirname, 'app');
