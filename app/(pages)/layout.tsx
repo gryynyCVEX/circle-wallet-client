@@ -20,6 +20,7 @@ import Image from "next/image";
 import React from "react";
 import { Inter } from "next/font/google";
 import { Metadata } from "next";
+import Link from "next/link";
 
 import { ClientProviders, Footer } from "@/app/components";
 import { Button, Typography } from "@mui/joy";
@@ -57,35 +58,12 @@ export default function RootLayout({
                 <AppContainer>{children}</AppContainer>
                 {/* Larger Screen Source Code/Docs */}
                 <div className='lg:flex hidden w-64 gap-x-2'>
-                  <a
-                    href='https://github.com/circlefin/w3s-sample-user-controlled-client-web'
-                    target='_blank'
-                  >
-                    <Button
-                      variant='outlined'
-                      startDecorator={
-                        <Image
-                          src={"/Github.svg"}
-                          height={16}
-                          width={16}
-                          alt='github'
-                        />
-                      }
-                    >
-                      Github
-                    </Button>
-                  </a>
-                  <a
-                    href='https://developers.circle.com/w3s/docs/sample-applications'
-                    target='_blank'
-                  >
-                    <Button
-                      variant='outlined'
-                      startDecorator={<BookOpenIcon width={16} />}
-                    >
-                      Docs
-                    </Button>
-                  </a>
+                  <Link href='/'>
+                    <Button variant='outlined'>Home</Button>
+                  </Link>
+                  <Link href='/onramp'>
+                    <Button variant='outlined'>On-Ramp</Button>
+                  </Link>
                 </div>
               </div>
               <Footer />
@@ -121,18 +99,12 @@ const AppContainer = ({ children }: { children: React.ReactNode }) => (
       </span>
 
       <span className='flex gap-x-2'>
-        <a
-          href='https://github.com/circlefin/w3s-sample-user-controlled-client-web'
-          target='_blank'
-        >
-          <Button variant='outlined'>Github</Button>
-        </a>
-        <a
-          href='https://developers.circle.com/w3s/docs/sample-applications'
-          target='_blank'
-        >
-          <Button variant='outlined'>Docs</Button>
-        </a>
+        <Link href='/'>
+          <Button variant='outlined'>Home</Button>
+        </Link>
+        <Link href='/onramp'>
+          <Button variant='outlined'>On-Ramp</Button>
+        </Link>
       </span>
     </div>
     {children}
