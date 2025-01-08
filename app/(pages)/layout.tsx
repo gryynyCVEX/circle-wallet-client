@@ -85,25 +85,15 @@ const AppContainer = ({ children }: { children: React.ReactNode }) => (
     </span>
     {/* banner for smaller screens */}
     <div className='lg:hidden p-4 flex justify-between items-center gradient-banner'>
-      <span className='flex items-center'>
-        <Image
-          src={`/CircleLogo.svg`}
-          alt='Circle Logo'
-          className='invert mr-2'
-          width={20}
-          height={20}
-        />
-        <Typography level='title-md' className='inline'>
-          User-Controlled Wallets
-        </Typography>
-      </span>
-
       <span className='flex gap-x-2'>
         <Link href='/'>
           <Button variant='outlined'>Home</Button>
         </Link>
         <Link href='/onramp'>
           <Button variant='outlined'>On-Ramp</Button>
+        </Link>
+        <Link href='/test'>
+          <Button variant='outlined'>Test</Button>
         </Link>
       </span>
     </div>

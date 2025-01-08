@@ -108,3 +108,21 @@ const createTransferHelper = async (bodyParams: {
 
 export const useCreateTransferMutation = () =>
   useMutation(createTransferHelper);
+
+// Create contract execution mutation
+const createExecuteContractHelper = async (bodyParams: {
+  contractAddress: string;
+  walletId: string;
+  callData: string;
+  feeLevel: "LOW" | "MEDIUM" | "HIGH";
+}) => {
+  const response = await axios.post<{ challengeId: string }>(
+    "/transactions/contractExecution",
+    bodyParams
+  );
+
+  return response.data;
+};
+
+export const useCreateExecuteContractMutation = () =>
+  useMutation(createExecuteContractHelper);
