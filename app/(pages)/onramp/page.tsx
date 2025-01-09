@@ -1,22 +1,80 @@
+"use client";
 
-// alchemy https://alchemypay.notion.site/USDC-6c1198830af94712b7a10b10b7d7d369
+import { TransakConfig, Transak } from '@transak/transak-sdk';
+import { useWallets } from '@/app/axios';
 
-export default async function OnRampPage() {
+const transakBaseConfig: TransakConfig = {
+  apiKey: 'c849eb1d-c22a-49e9-9899-7ae69192bc2d', // (Required)
+  environment: Transak.ENVIRONMENTS.STAGING, // Transak.ENVIRONMENTS.PRODUCTION // (Required)
+  cryptoCurrencyCode: 'USDC',
+  network: 'arbitrum',
+};
+
+let transak: Transak | null = null;
+
+// To get all the events
+Transak.on('*', (data) => {
+  console.log(data);
+});
+
+// This will trigger when the user closed the widget
+Transak.on(Transak.EVENTS.TRANSAK_WIDGET_CLOSE, () => {
+  console.log('Transak SDK closed!');
+  transak?.close();
+});
+
+/*
+* This will trigger when the user has confirmed the order
+* This doesn't guarantee that payment has completed in all scenarios
+* If you want to close/navigate away, use the TRANSAK_ORDER_SUCCESSFUL event
+*/
+Transak.on(Transak.EVENTS.TRANSAK_ORDER_CREATED, (orderData) => {
+  console.log(orderData);
+});
+
+/*
+* This will trigger when the user marks payment is made
+* You can close/navigate away at this event
+*/
+Transak.on(Transak.EVENTS.TRANSAK_ORDER_SUCCESSFUL, (orderData) => {
+  console.log(orderData);
+  transak?.close();
+});
+
+export default function OnRampPage() {
+  const { data: wallets } = useWallets();
+  const wallet = wallets?.data.wallets[0];
+
+  const handleBuy = () => {
+    if (!wallet) {
+      return;
+    }
+
+    transak = new Transak({
+      ...transakBaseConfig,
+      productsAvailed: 'BUY',
+      walletAddress: wallet.address,
+    });
+
+    transak.init();
+  };
+
+  const handleSell = () => {
+
+    transak = new Transak({
+      ...transakBaseConfig,
+      productsAvailed: 'SELL',
+    });
+
+    transak.init();
+  };
 
   return <>
-    <h1>Onramp Money:</h1>
-    <iframe
-      src="https://onramp.money/main/buy/?appId=1&network=arbitrum&coinCode=usdc&walletAddress=0xce4c9Be3CFC121bAd7D2D70266f6a976F08728DD&paymentMethod=1&fiatType=21"
-      height="700"
-    />
-    <h1>Alchemy Pay</h1>
-    <iframe
-      height="625"
-      title="AlchemyPay On/Off Ramp Widget"
-      src="https://ramptest.alchemypay.org/?appId=f83Is2y7L425rxl8&fiat=USD&network=ARBITRUM&crypto=USDC&address=0xce4c9Be3CFC121bAd7D2D70266f6a976F08728DD"
-      allowTransparency={true}
-      allowFullScreen={true}
-      style={{ display: "block", width: "100%", maxHeight: 625, maxWidth: 500 }}
-    />
+    <h1>On-ramp</h1>
+    <p>Wallet address: {wallet?.address}</p>
+    <button onClick={handleBuy}>Buy USDC</button>
+
+    <h1>Off-ramp</h1>
+    <button onClick={handleSell}>Sell</button>
   </>;
 }
